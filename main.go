@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
@@ -78,16 +77,17 @@ func main() {
 
 	app.RunWhenOnBrowser()
 
-	http.Handle("/", &app.Handler{
+	err := app.GenerateStaticWebsite(".", &app.Handler{
 		Name:        "Brandon Carpenter - Resume",
 		Description: "A simple PWA version of my resume",
+		Resources:   app.GitHubPages("pwa-resume"),
 		Icon: app.Icon{
 			Default: "web/icon.png",
 			SVG:     "web/icon.svg",
 		},
 	})
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 }
